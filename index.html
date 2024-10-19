@@ -190,11 +190,6 @@
                 output = output.replace(pattern, replacement);
             });
 
-            // 追加の置換ルールを適用
-            additionalReplacements.forEach(({ pattern, replacement }) => {
-                output = output.replace(pattern, replacement);
-            });
-
             // 小文字に変換
             toLowerCaseReplacements.forEach(({ pattern, replacement }) => {
                 output = output.replace(pattern, replacement);
