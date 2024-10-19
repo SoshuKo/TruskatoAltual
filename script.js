@@ -13,7 +13,7 @@ const replacements = [
   { pattern: /öģh/g, replacement: "IŬ" },
 
   // ②短母音字の変換（大文字に変換）
-  { pattern: /a(?=[iüeoö])/g, replacement: "E" },
+  { pattern: /a(?=[iüeö])/g, replacement: "E" },
   { pattern: /a/g, replacement: "A" },
   { pattern: /i/g, replacement: "E" },
   { pattern: /ï/g, replacement: "A" },
@@ -86,7 +86,6 @@ const replacements = [
 
 // 追加の置換ルール
 const additionalReplacements = [
-    
   // 連続する文字の変換
   { pattern: /ŬU/g, replacement: "ŬA" },
   { pattern: /ŬŪ/g, replacement: "ŬĀ" },
@@ -135,93 +134,53 @@ const toLowerCaseReplacements = [
   { pattern: /O/g, replacement: "o" },
   { pattern: /Ö/g, replacement: "ö" },
   { pattern: /I/g, replacement: "i" },
-  { pattern: /Ï/g, replacement: "ï" },
   { pattern: /U/g, replacement: "u" },
-  { pattern: /Ü/g, replacement: "ü" },
-  { pattern: /CHŬ/g, replacement: "chŭ" },
-  { pattern: /PŬ/g, replacement: "pŭ" },
-  { pattern: /TŬ/g, replacement: "tŭ" },
-  { pattern: /CŬ/g, replacement: "cŭ" },
-  { pattern: /YŬ/g, replacement: "yŭ" },
-  { pattern: /JŬ/g, replacement: "jŭ" },
-  { pattern: /CH/g, replacement: "ch" },
-  { pattern: /KHŬ/g, replacement: "khŭ" },
-  { pattern: /KŬ/g, replacement: "kŭ" },
-  { pattern: /PHŬ/g, replacement: "phŭ" },
-  { pattern: /BŬ/g, replacement: "bŭ" },
-  { pattern: /VŬ/g, replacement: "vŭ" },
-  { pattern: /P/g, replacement: "p" },
-  { pattern: /THŬ/g, replacement: "thŭ" },
-  { pattern: /DŬ/g, replacement: "dŭ" },
-  { pattern: /ZŬ/g, replacement: "zŭ" },
-  { pattern: /CŬ/g, replacement: "cŭ" },
-  { pattern: /SŬ/g, replacement: "sŭ" },
-  { pattern: /T/g, replacement: "t" },
-  { pattern: /Y/g, replacement: "y" },
-  { pattern: /J/g, replacement: "j" },
-  { pattern: /KH/g, replacement: "kh" },
-  { pattern: /GŬ/g, replacement: "gŭ" },
-  { pattern: /GHŬ/g, replacement: "ghŭ" },
-  { pattern: /K/g, replacement: "k" },
-  { pattern: /PH/g, replacement: "ph" },
-  { pattern: /B/g, replacement: "b" },
-  { pattern: /V/g, replacement: "v" },
-  { pattern: /F/g, replacement: "f" },
-  { pattern: /TH/g, replacement: "th" },
-  { pattern: /D/g, replacement: "d" },
-  { pattern: /Z/g, replacement: "z" },
-  { pattern: /C/g, replacement: "c" },
-  { pattern: /S/g, replacement: "s" },
-  { pattern: /W/g, replacement: "w" },
-  { pattern: /7/g, replacement: "'" }, // 7を'に変換
-  { pattern: /SH/g, replacement: "sh" },
-  { pattern: /N/g, replacement: "n" },
-  { pattern: /G/g, replacement: "g" },
-  { pattern: /GH/g, replacement: "gh" },
-  { pattern: /X/g, replacement: "x" },
-  { pattern: /KH/g, replacement: "kh" },
-  { pattern: /G/g, replacement: "g" },
-  { pattern: /GH/g, replacement: "gh" },
-  { pattern: /R/g, replacement: "r" }
+  { pattern: /Ū/g, replacement: "ū" },
+  { pattern: /7/g, replacement: "'" }
 ];
 
-
-// 全体の変換処理
+// 変換処理を実行する関数
 function transformText(input) {
-  let transformed = input;
+  let output = input;
 
-  // replacements の置換（大文字化）
-  replacements.forEach(rule => {
-    transformed = transformed.replace(rule.pattern, rule.replacement);
+  // 変換ルールを適用
+  replacements.forEach(({ pattern, replacement }) => {
+    output = output.replace(pattern, replacement);
   });
 
-  // 大文字から小文字に戻す処理
-  toLowerCaseReplacements.forEach(rule => {
-    transformed = transformed.replace(rule.pattern, rule.replacement);
+  // 追加の置換ルールを適用
+  additionalReplacements.forEach(({ pattern, replacement }) => {
+    output = output.replace(pattern, replacement);
   });
 
-  // additionalReplacements の適用
-  additionalReplacements.forEach(rule => {
-    transformed = transformed.replace(rule.pattern, rule.replacement);
+  // 小文字に変換
+  toLowerCaseReplacements.forEach(({ pattern, replacement }) => {
+    output = output.replace(pattern, replacement);
   });
 
-  return transformed;
+  return output;
 }
 
-// 複数単語の変換処理
-function transformMultipleWords(input) {
-  const words = input.split(/\s+/);
-  const transformedWords = words.map(word => transformText(word));
-  return transformedWords.join('\n');
+// 複数の単語を変換する関数
+function transformMultipleWords(inputText) {
+  const words = inputText.split(/\s+/); // スペースで単語を分割
+  const transformedWords = words.map(word => transformText(word)); // 各単語を変換
+  return transformedWords.join(' '); // 変換された単語をスペースで結合
 }
 
-function convert() {
-  const inputText = document.getElementById('inputField').value; // テキストフィールドの値を取得
-  const outputText = transformMultipleWords(inputText); // 変換処理
-  document.getElementById('outputField').textContent = outputText; // 変換結果を表示
+// イベントリスナーを追加する関数
+function addEventListeners() {
+  const inputField = document.getElementById("inputText");
+  const outputField = document.getElementById("outputText");
+  const button = document.getElementById("convertButton");
+
+  button.addEventListener("click", () => {
+    const inputValue = inputField.value; // 入力値を取得
+    const transformedValue = transformMultipleWords(inputValue); // 変換
+    outputField.value = transformedValue; // 出力フィールドに結果を表示
+    console.log("変換結果:", transformedValue); // コンソールに結果を出力
+  });
 }
 
-// 使用例
-const inputText = "トルスカ語のテキストを入力してください";
-const outputText = transformMultipleWords(inputText);
-console.log(outputText);
+// ページが読み込まれたらイベントリスナーを追加
+window.onload = addEventListeners;
