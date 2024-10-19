@@ -3,22 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>トルスカ語→アルタル語変換機</title>
-    <script src="script.js" defer></script>
+    <title>トルスカ語→アルタル語変換器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        #output {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>トルスカ語→アルタル語変換機</h1>
-    <textarea id="inputText" rows="10" cols="50" placeholder="トルスカ語の単語を入力してください"></textarea>
-    <button onclick="convertText()">変換する</button>
-    <h2>変換結果</h2>
-    <pre id="outputText"></pre>
+    <h1>トルスカ語→アルタル語変換器</h1>
+    <p>変換したいトルスカ語を入力してください：</p>
+    <input type="text" id="inputText" placeholder="ここに入力">
+    <button onclick="convert()">変換</button>
+    <div id="output"></div>
 
-    <script>
-        function convertText() {
-            const input = document.getElementById("inputText").value;
-            const output = transformMultipleWords(input);
-            document.getElementById("outputText").textContent = output;
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
