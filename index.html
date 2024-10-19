@@ -114,34 +114,6 @@
             { pattern: /'/g, replacement: "R" }
         ];
 
-        // 追加の置換ルール
-        const additionalReplacements = [
-            { pattern: /ŬU/g, replacement: "ŬA" },
-            { pattern: /ŬŪ/g, replacement: "ŬĀ" },
-            { pattern: /ŬÜ/g, replacement: "ŬE" },
-            { pattern: /ŬIŬ/g, replacement: "ŬĒ" },
-            { pattern: /ŬUĬ/g, replacement: "ŬAĬ" },
-            { pattern: /CH$/, replacement: "N" },
-            { pattern: /KH$/, replacement: "NG" },
-            { pattern: /PH$/, replacement: "M" },
-            { pattern: /SH$/, replacement: "L" },
-            { pattern: /TH$/, replacement: "N" },
-            { pattern: /Y$/, replacement: "" },
-            { pattern: /J$/, replacement: "N" },
-            { pattern: /B$/, replacement: "M" },
-            { pattern: /V$/, replacement: "M" },
-            { pattern: /F$/, replacement: "M" },
-            { pattern: /D$/, replacement: "N" },
-            { pattern: /Z$/, replacement: "L" },
-            { pattern: /C$/, replacement: "N" },
-            { pattern: /S$/, replacement: "L" },
-            { pattern: /W$/, replacement: "" },
-            { pattern: /7$/g, replacement: "" },
-            { pattern: /G$/, replacement: "NG" },
-            { pattern: /X$/, replacement: "NG" },
-            { pattern: /R$/, replacement: "L" }
-        ];
-
         // 大文字を小文字に変換し、7を'に変換
         const toLowerCaseReplacements = [
   { pattern: /Ā/g, replacement: "ā" },
