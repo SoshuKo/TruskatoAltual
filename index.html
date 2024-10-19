@@ -177,6 +177,51 @@
   { pattern: /RŬ/g, replacement: "rŭ" },
   { pattern: /R/g, replacement: "r" }
 ];
+        
+        // 特定の母音の変換
+        const vowelTransformations = [
+            { pattern: /ŭuĭ/g, replacement: "ŭaĭ" },
+            { pattern: /ŭū/g, replacement: "ŭā" },
+            { pattern: /ŭu/g, replacement: "ŭa" },
+            { pattern: /ŭü/g, replacement: "ŭe" },
+        ];
+
+        // hの後に特定の文字以外が続く場合のh削除
+        const hRemoval = /h(?=[^ŭaeēiīïoōöūü])/g;
+
+        // 単語の語尾の置換
+        const suffixTransformations = [
+            { pattern: /hŭ/g, replacement: "" },
+            { pattern: /ŭ/g, replacement: "" },
+            { pattern: /b/g, replacement: "m" },
+            { pattern: /ch/g, replacement: "n" },
+            { pattern: /c/g, replacement: "n" },
+            { pattern: /d/g, replacement: "n" },
+            { pattern: /f/g, replacement: "m" },
+            { pattern: /j/g, replacement: "n" },
+            { pattern: /l/g, replacement: "l" },
+            { pattern: /m/g, replacement: "m" },
+            { pattern: /n/g, replacement: "n" },
+            { pattern: /ph/g, replacement: "m" },
+            { pattern: /p/g, replacement: "m" },
+            { pattern: /r/g, replacement: "l" },
+            { pattern: /sh/g, replacement: "l" },
+            { pattern: /s/g, replacement: "l" },
+            { pattern: /th/g, replacement: "n" },
+            { pattern: /t/g, replacement: "n" },
+            { pattern: /v/g, replacement: "m" },
+            { pattern: /w/g, replacement: "" },
+            { pattern: /y/g, replacement: "" },
+            { pattern: /z/g, replacement: "n" },
+            { pattern: /'/g, replacement: "" },
+            { pattern: /gh/g, replacement: "ng" },
+            { pattern: /g/g, replacement: "ng" },
+            { pattern: /kh/g, replacement: "ng" },
+            { pattern: /k/g, replacement: "ng" },
+            { pattern: /x/g, replacement: "ng" },
+            { pattern: /nng/g, replacement: "ng" },
+        ];
+
         // 変換処理を実行する関数
         function transformText(input) {
             let output = input;
@@ -188,6 +233,19 @@
 
             // 小文字に変換
             toLowerCaseReplacements.forEach(({ pattern, replacement }) => {
+                output = output.replace(pattern, replacement);
+            });
+
+            // 母音の変換
+            vowelTransformations.forEach(({ pattern, replacement }) => {
+                output = output.replace(pattern, replacement);
+            });
+
+            // hの削除
+            output = output.replace(hRemoval, '');
+
+            // 単語の語尾の置換
+            suffixTransformations.forEach(({ pattern, replacement }) => {
                 output = output.replace(pattern, replacement);
             });
 
@@ -214,6 +272,12 @@
                 console.log("変換結果:", transformedValue); // コンソールに結果を出力
             });
         }
+
+        // ページが読み込まれたらイベントリスナーを追加
+        window.onload = addEventListeners;
+    </script>
+</body>
+</html>
 
         // ページが読み込まれたらイベントリスナーを追加
         window.onload = addEventListeners;
