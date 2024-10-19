@@ -16,19 +16,45 @@
         }
         h1 {
             text-align: center;
+            color: #333;
         }
         textarea {
             width: 100%;
             height: 100px;
             margin-bottom: 10px;
+            border: 1px solid #007BFF;
+            border-radius: 4px;
+            padding: 8px;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         button {
             padding: 10px 20px;
             font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
         }
-        #outputText {
-            height: 100px;
+        button:hover {
+            background-color: #0056b3;
+        }
+        #outputContainer {
+            margin-top: 20px;
+            padding: 10px;
             background-color: #eef;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 5px 0;
+            border-bottom: 1px solid #ccc;
         }
     </style>
 </head>
@@ -36,8 +62,13 @@
     <h1>テキスト変換ツール</h1>
     <textarea id="inputText" placeholder="ここにテキストを入力..."></textarea>
     <button id="convertButton">変換</button>
-    <textarea id="outputText" placeholder="変換結果がここに表示されます..." readonly></textarea>
+    <button id="clearButton">クリア</button>
 
+    <div id="outputContainer">
+        <h2>変換結果:</h2>
+        <ul id="outputList"></ul>
+    </div>
+    
     <script>
         // 変換ルールの定義（大文字に変換）
         const replacements = [
@@ -225,29 +256,23 @@
             { pattern: /nng$/g, replacement: "ng" },
         ];
 
-        // 変換処理を実行する関数
         function transformText(input) {
             let output = input;
 
-            // 変換ルールを適用
             replacements.forEach(({ pattern, replacement }) => {
                 output = output.replace(pattern, replacement);
             });
 
-            // 小文字に変換
             toLowerCaseReplacements.forEach(({ pattern, replacement }) => {
                 output = output.replace(pattern, replacement);
             });
 
-            // 母音の変換
             vowelTransformations.forEach(({ pattern, replacement }) => {
                 output = output.replace(pattern, replacement);
             });
 
-            // hの削除
             output = output.replace(hRemoval, '');
 
-            // 単語の語尾の置換
             suffixTransformations.forEach(({ pattern, replacement }) => {
                 output = output.replace(pattern, replacement);
             });
@@ -255,34 +280,39 @@
             return output;
         }
 
-        // 複数の単語を変換する関数
         function transformMultipleWords(inputText) {
-            const words = inputText.split(/\s+/); // スペースで単語を分割
-            const transformedWords = words.map(word => transformText(word)); // 各単語を変換
-            return transformedWords.join(' '); // 変換された単語をスペースで結合
+            const words = inputText.split(/\s+/);
+            const transformedWords = words.map(word => transformText(word));
+            return transformedWords;
         }
 
-        // イベントリスナーを追加する関数
         function addEventListeners() {
             const inputField = document.getElementById("inputText");
-            const outputField = document.getElementById("outputText");
-            const button = document.getElementById("convertButton");
+            const outputList = document.getElementById("outputList");
+            const convertButton = document.getElementById("convertButton");
+            const clearButton = document.getElementById("clearButton");
 
-            button.addEventListener("click", () => {
-                const inputValue = inputField.value; // 入力値を取得
-                const transformedValue = transformMultipleWords(inputValue); // 変換
-                outputField.value = transformedValue; // 出力フィールドに結果を表示
-                console.log("変換結果:", transformedValue); // コンソールに結果を出力
+            convertButton.addEventListener("click", () => {
+                const inputValue = inputField.value;
+                const transformedValues = transformMultipleWords(inputValue);
+                
+                // 出力リストをクリア
+                outputList.innerHTML = '';
+                
+                // 変換結果をリストに表示
+                transformedValues.forEach(value => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = value;
+                    outputList.appendChild(listItem);
+                });
+            });
+
+            clearButton.addEventListener("click", () => {
+                inputField.value = ''; // 入力をクリア
+                outputList.innerHTML = ''; // 出力リストをクリア
             });
         }
 
-        // ページが読み込まれたらイベントリスナーを追加
-        window.onload = addEventListeners;
-    </script>
-</body>
-</html>
-
-        // ページが読み込まれたらイベントリスナーを追加
         window.onload = addEventListeners;
     </script>
 </body>
