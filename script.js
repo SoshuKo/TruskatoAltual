@@ -215,6 +215,12 @@ function transformMultipleWords(input) {
   return transformedWords.join('\n');
 }
 
+function convert() {
+  const inputText = document.getElementById('inputField').value; // テキストフィールドの値を取得
+  const outputText = transformMultipleWords(inputText); // 変換処理
+  document.getElementById('outputField').textContent = outputText; // 変換結果を表示
+}
+
 // 使用例
 const inputText = "トルスカ語のテキストを入力してください";
 const outputText = transformMultipleWords(inputText);
