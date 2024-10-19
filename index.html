@@ -4,21 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>トルスカ語→アルタル語変換器</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        #output {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <h1>トルスカ語→アルタル語変換器</h1>
-    <div>
-        <label for="input-text">トルスカ語のテキストを入力:</label>
-        <textarea id="input-text" rows="4" cols="50"></textarea>
-    </div>
-    <div>
-        <button onclick="convertText()">変換する</button>
-    </div>
-    <div>
-        <h3>アルタル語の結果:</h3>
-        <p id="output-text"></p>
-    </div>
+    <p>変換したいトルスカ語を入力してください：</p>
+    <input type="text" id="inputText" placeholder="ここに入力">
+    <button onclick="convert()">変換</button>
+    <div id="output"></div>
 
     <script src="script.js"></script>
 </body>
