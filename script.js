@@ -1,144 +1,114 @@
-// 置換ルールの定義
-const replacements = [
-  // ①四重音字の置換
-  { pattern: /sçļ/g, replacement: "kr" },
-  // ②三重音字の置換
-  { pattern: /agh/g, replacement: "ā" },
-  { pattern: /aģh/g, replacement: "ā" },
-  { pattern: /eģh/g, replacement: "ē" },
-  { pattern: /ëgh/g, replacement: "ō" },
-  { pattern: /iģh/g, replacement: "ī" },
-  { pattern: /ïgh/g, replacement: "ū" },
-  { pattern: /ogh/g, replacement: "ō" },
-  { pattern: /öģh/g, replacement: "ē" },
-  { pattern: /ugh/g, replacement: "ū" },
-  { pattern: /ügh/g, replacement: "ī" },
-  { pattern: /çhļ/g, replacement: "xr" },
-  { pattern: /sch/g, replacement: "ch#" },
-  // ③二重音字の置換
-  { pattern: /sp/g, replacement: "p#" },
-  { pattern: /st/g, replacement: "t#" },
-  { pattern: /sc/g, replacement: "c#" },
-  { pattern: /sç/g, replacement: "k#" },
-  { pattern: /sk/g, replacement: "q#" },
-  { pattern: /tr/g, replacement: "tr" },
-  { pattern: /ch/g, replacement: "sh" },
-  { pattern: /çļ/g, replacement: "xr" },
-  { pattern: /ģļ/g, replacement: "gr" },
-  { pattern: /çh/g, replacement: "x" },
-  // ④一重音字Aの置換
-  { pattern: /ü/g, replacement: "i" },
-  { pattern: /ï/g, replacement: "u" },
-  { pattern: /ö/g, replacement: "e" },
-  { pattern: /ë/g, replacement: "o" },
-  { pattern: /p/g, replacement: "f" },
-  { pattern: /t/g, replacement: "r" },
-  { pattern: /c/g, replacement: "s" },
-  { pattern: /k/g, replacement: "qx" },
-  { pattern: /g/g, replacement: "gh" },
-  // ⑤一重音字Bの置換
-  { pattern: /ņ/g, replacement: "n" },
-  { pattern: /ç/g, replacement: "x" },
-  { pattern: /ģ/g, replacement: "g" },
-  { pattern: /ļ/g, replacement: "y" },
-];
+function convertText() {
+    let inputText = document.getElementById("input-text").value;
+    
+    // ①長母音字変換
+    inputText = inputText.replace(/aģh/g, 'ē').replace(/agh/g, 'ā')
+                         .replace(/iģh/g, 'ē').replace(/ïgh/g, 'uĭ')
+                         .replace(/ugh/g, 'ā').replace(/üģh/g, 'eŭ')
+                         .replace(/eģh/g, 'ī').replace(/ëgh/g, 'oĭ')
+                         .replace(/ogh/g, 'ū').replace(/öģh/g, 'iŭ');
 
-// 追加の置換ルールの定義
-const additionalReplacements = [
-  // 語尾の置換
-  { pattern: /b$/, replacement: "p" },
-  { pattern: /v$/, replacement: "f" },
-  { pattern: /^v/, replacement: "f" },
-  { pattern: /^f/, replacement: "" },
-  { pattern: /f$/, replacement: "" }, // 語尾のfを削除
-  { pattern: /d$/, replacement: "t" },
-  { pattern: /c$/, replacement: "s" },
-  { pattern: /^z/, replacement: "s" },
-  { pattern: /z$/, replacement: "s" },
-  { pattern: /ch$/, replacement: "sh" },
-  { pattern: /^j/, replacement: "sh" },
-  { pattern: /j$/, replacement: "sh" },
-  { pattern: /g$/, replacement: "k" },
-  { pattern: /qx$/, replacement: "q" },
-  { pattern: /^gh/, replacement: "x" },
-  { pattern: /gh$/, replacement: "x" },
-  { pattern: /^x/, replacement: "" },
-  { pattern: /x$/, replacement: "" },  // 語尾のxを削除
-];
+    // ②短母音字変換
+    inputText = inputText.replace(/a/g, (m) => (/[iüeoö]/.test(inputText) ? 'e' : 'a'))
+                         .replace(/i/g, 'e')
+                         .replace(/ï/g, 'a')
+                         .replace(/u/g, 'o')
+                         .replace(/ü/g, 'ö')
+                         .replace(/e/g, 'i')
+                         .replace(/ë/g, 'ï')
+                         .replace(/o/g, 'u')
+                         .replace(/ö/g, 'ü');
 
-// 母音の置換
-const vowelsMap = {
-  a: 'ā',
-  e: 'ē',
-  i: 'ī',
-  o: 'ō',
-  u: 'ū',
-};
+    // ③四重子音字変換
+    inputText = inputText.replace(/schr/g, 'chŭ');
 
-// 置換処理（追加のルール適用）
-function applyAdditionalReplacements(word) {
-  let transformed = word;
+    // ④三重子音字変換
+    inputText = inputText.replace(/spr/g, 'pŭ')
+                         .replace(/str/g, 'tŭ')
+                         .replace(/scl/g, 'cŭ')
+                         .replace(/shr/g, 'yŭ')
+                         .replace(/chr/g, 'jŭ')
+                         .replace(/sch/g, 'ch')
+                         .replace(/çhļ/g, 'khŭ')
+                         .replace(/sçl/g, 'kŭ')
+                         .replace(/skr/g, 'kŭ');
 
-  // 追加の置換ルールを適用
-  additionalReplacements.forEach(rule => {
-    transformed = transformed.replace(rule.pattern, rule.replacement);
-  });
+    // ⑤二重子音字変換
+    inputText = inputText.replace(/fr/g, 'phŭ')
+                         .replace(/pr/g, 'bŭ')
+                         .replace(/br/g, 'vŭ')
+                         .replace(/sp/g, 'p')
+                         .replace(/sl/g, 'thŭ')
+                         .replace(/tr/g, 'dŭ')
+                         .replace(/dr/g, 'zŭ')
+                         .replace(/zl/g, 'cŭ')
+                         .replace(/cl/g, 'sŭ')
+                         .replace(/st/g, 't')
+                         .replace(/sh/g, 'y')
+                         .replace(/ch/g, 'j')
+                         .replace(/çh/g, 'kh')
+                         .replace(/çļ/g, 'gŭ')
+                         .replace(/ģļ/g, 'ghŭ')
+                         .replace(/sç/g, 'k')
+                         .replace(/xr/g, 'khŭ')
+                         .replace(/kr/g, 'gŭ')
+                         .replace(/gr/g, 'ghŭ')
+                         .replace(/sk/g, 'k');
 
-  // ā, ē, ī, ō, ūが含まれていない場合の母音置換
-  if (!/[āēīōū]/.test(transformed)) {
-    // 最後に出現する母音（a, e, i, o, u）を置換
-    const lastVowelMatch = transformed.match(/[aeiou](?!.*[aeiou])/);
-    if (lastVowelMatch) {
-      const lastVowel = lastVowelMatch[0];
-      transformed = transformed.replace(lastVowel, vowelsMap[lastVowel]);
-    }
-  }
+    // ⑥一重子音字変換
+    inputText = inputText.replace(/f/g, 'ph')
+                         .replace(/p/g, 'b')
+                         .replace(/b/g, 'v')
+                         .replace(/v/g, 'f')
+                         .replace(/s/g, 'th')
+                         .replace(/t/g, 'd')
+                         .replace(/d/g, 'z')
+                         .replace(/z/g, 'c')
+                         .replace(/c/g, 's')
+                         .replace(/r/g, 'w')
+                         .replace(/l/g, "'")
+                         .replace(/j/g, 'sh')
+                         .replace(/ņ/g, 'n')
+                         .replace(/ç/g, 'g')
+                         .replace(/ģ/g, 'gh')
+                         .replace(/y/g, 'x')
+                         .replace(/ļ/g, "'")
+                         .replace(/x/g, 'kh')
+                         .replace(/k/g, 'g')
+                         .replace(/g/g, 'gh')
+                         .replace(/'/g, 'r');
 
-  return transformed;
+    // 子音字が連続する場合、前の子音字を削除
+    inputText = inputText.replace(/([bcdfghjklmnprstvwxyz'])\1/g, '$1');
+
+    // 特定の連続文字を置き換え
+    inputText = inputText.replace(/ŭu/g, 'u')
+                         .replace(/ŭū/g, 'ū')
+                         .replace(/ŭü/g, 'ü')
+                         .replace(/ŭiŭ/g, 'iŭ')
+                         .replace(/ŭeŭ/g, 'eŭ')
+                         .replace(/ŭuĭ/g, 'uĭ');
+
+    // 語尾の変換
+    inputText = inputText.replace(/ch\b/g, 'n')
+                         .replace(/kh\b/g, 'ng')
+                         .replace(/ph\b/g, 'm')
+                         .replace(/sh\b/g, 'l')
+                         .replace(/th\b/g, 'n')
+                         .replace(/y\b/g, '')
+                         .replace(/j\b/g, 'n')
+                         .replace(/b\b/g, 'm')
+                         .replace(/v\b/g, 'm')
+                         .replace(/f\b/g, 'm')
+                         .replace(/d\b/g, 'n')
+                         .replace(/z\b/g, 'l')
+                         .replace(/c\b/g, 'n')
+                         .replace(/s\b/g, 'l')
+                         .replace(/w\b/g, '')
+                         .replace(/'\b/g, '')
+                         .replace(/g\b/g, 'ng')
+                         .replace(/x\b/g, 'ng')
+                         .replace(/r\b/g, 'l');
+
+    document.getElementById("output-text").innerText = inputText;
 }
-
-// 全体の変換処理
-function transformText(input) {
-  let transformed = input;
-  const markers = []; // マーカーリスト
-
-  // ①～⑤の置換を適用
-  replacements.forEach((rule, index) => {
-    let match;
-    const regex = new RegExp(rule.pattern.source, 'g'); // 全てのマッチを探す
-
-    while ((match = regex.exec(transformed)) !== null) {
-      const start = match.index;
-      const end = regex.lastIndex;
-
-      if (!markers.some(marker => marker.start <= start && marker.end >= end)) {
-        transformed = transformed.substring(0, start) + rule.replacement + transformed.substring(end);
-        markers.push({
-          start: start,
-          end: start + rule.replacement.length,
-        });
-        regex.lastIndex = start + rule.replacement.length;
-      }
-    }
-  });
-
-  // 追加の置換を適用
-  transformed = applyAdditionalReplacements(transformed);
-
-  // 最後に # を削除（⑦）
-  transformed = transformed.replace(/#/g, "");
-
-  return transformed;
-}
-
-// 複数単語の変換処理
-function transformMultipleWords(input) {
-  const words = input.split(/\s+/);
-  const transformedWords = words.map(word => transformText(word));
-  return transformedWords.join('\n');
-}
-
-// 使用例
-const inputText = "トルスカ語の単語を入力してください";
-const outputText = transformMultipleWords(inputText);
-console.log(outputText);
