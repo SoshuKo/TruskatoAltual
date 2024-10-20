@@ -267,7 +267,7 @@ const removeApostrophe = /([^aāeēiïīoöōuüū])'/g;
 const addApostropheAtStart = /^([aeiouëïöü])/g;
 
 // 単語内にe, i, ö, üが含まれる場合、その単語内のaをeに置換
-const replaceAinSpecificVowelWords = /\b(?=\w*[eiöü])\w*a/g;
+const replaceAinSpecificVowelWords = /\b(?=\w*[eēiīöü])\w*a/g;
 
 function transformText(input) {
     let output = input;
