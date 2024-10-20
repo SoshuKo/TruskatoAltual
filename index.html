@@ -256,29 +256,40 @@
             { pattern: /nng$/g, replacement: "ng" },
         ];
 
-        function transformText(input) {
-            let output = input;
+// 追加処理
+// ① y, w, 'の右に特定の母音以外が続く場合に削除
+const removeYW = /[yw'](?=[^aāeēiïīoöōuüū])/g;
 
-            replacements.forEach(({ pattern, replacement }) => {
-                output = output.replace(pattern, replacement);
-            });
+// ② a, ā, e, ē, i, ï, ī, o, ö, ō, u, ü, ū以外の文字の右に'が続く場合に削除
+const removeApostrophe = /([^aāeēiïīoöōuüū])'/g;
 
-            toLowerCaseReplacements.forEach(({ pattern, replacement }) => {
-                output = output.replace(pattern, replacement);
-            });
+function transformText(input) {
+    let output = input;
 
-            vowelTransformations.forEach(({ pattern, replacement }) => {
-                output = output.replace(pattern, replacement);
-            });
+    replacements.forEach(({ pattern, replacement }) => {
+        output = output.replace(pattern, replacement);
+    });
 
-            output = output.replace(hRemoval, '');
+    toLowerCaseReplacements.forEach(({ pattern, replacement }) => {
+        output = output.replace(pattern, replacement);
+    });
 
-            suffixTransformations.forEach(({ pattern, replacement }) => {
-                output = output.replace(pattern, replacement);
-            });
+    vowelTransformations.forEach(({ pattern, replacement }) => {
+        output = output.replace(pattern, replacement);
+    });
 
-            return output;
-        }
+    output = output.replace(hRemoval, '');
+
+    // 追加した削除処理を適用
+    output = output.replace(removeYW, '');
+    output = output.replace(removeApostrophe, '$1');
+
+    suffixTransformations.forEach(({ pattern, replacement }) => {
+        output = output.replace(pattern, replacement);
+    });
+
+    return output;
+}
 
         function transformMultipleWords(inputText) {
             const words = inputText.split(/\s+/);
