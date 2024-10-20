@@ -295,7 +295,7 @@ function transformText(input) {
 
 // e, i, ö, üが含まれる単語内のaをeに置換
     output = output.replace(replaceAinSpecificVowelWords, (match) => {
-        return match.replace(/a/g, "e");
+        return match.replace(/a/g, "e").replace(/ā/g, "ē");
     });
 
     suffixTransformations.forEach(({ pattern, replacement }) => {
