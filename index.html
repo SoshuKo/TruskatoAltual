@@ -266,6 +266,9 @@ const removeApostrophe = /([^aāeēiïīoöōuüū])'/g;
 // 語頭が母音の場合に'を追加
 const addApostropheAtStart = /^([aeiouëïöü])/g;
 
+// 単語内にe, i, ö, üが含まれる場合、その単語内のaをeに置換
+const replaceAinSpecificVowelWords = /\b(?=\w*[eiöü])\w*a/g;
+
 function transformText(input) {
     let output = input;
 
@@ -289,6 +292,11 @@ function transformText(input) {
     // 追加した削除処理を適用
     output = output.replace(removeYW, '');
     output = output.replace(removeApostrophe, '$1');
+
+// e, i, ö, üが含まれる単語内のaをeに置換
+    output = output.replace(replaceAinSpecificVowelWords, (match) => {
+        return match.replace(/a/g, "e");
+    });
 
     suffixTransformations.forEach(({ pattern, replacement }) => {
         output = output.replace(pattern, replacement);
