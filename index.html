@@ -263,8 +263,14 @@ const removeYW = /[yw'](?=[^aāeēiïīoöōuüū])/g;
 // ② a, ā, e, ē, i, ï, ī, o, ö, ō, u, ü, ū以外の文字の右に'が続く場合に削除
 const removeApostrophe = /([^aāeēiïīoöōuüū])'/g;
 
+// 語頭が母音の場合に'を追加
+const addApostropheAtStart = /^([aeiouëïöü])/g;
+
 function transformText(input) {
     let output = input;
+
+// 語頭が母音の場合に'を追加
+    output = output.replace(addApostropheAtStart, "'$1");
 
     replacements.forEach(({ pattern, replacement }) => {
         output = output.replace(pattern, replacement);
