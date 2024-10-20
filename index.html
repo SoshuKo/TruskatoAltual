@@ -256,12 +256,41 @@
             { pattern: /nng$/g, replacement: "ng" },
         ];
 
-        function transformText(input) {
-            let output = input;
+        // y, w, 'に特定の母音以外の文字が続く場合削除
+const y_w_apostropheRemoval = /([yw'])(?=[^aāeēiïīoöōuüū])/g;
 
-            replacements.forEach(({ pattern, replacement }) => {
-                output = output.replace(pattern, replacement);
-            });
+// 母音以外の文字に'が続く場合削除
+const apostropheAfterNonVowelRemoval = /[^aāeēiïīoöōuüū]'/g;
+
+function transformText(input) {
+    let output = input;
+
+    // 既存の変換処理
+    replacements.forEach(({ pattern, replacement }) => {
+        output = output.replace(pattern, replacement);
+    });
+
+    toLowerCaseReplacements.forEach(({ pattern, replacement }) => {
+        output = output.replace(pattern, replacement);
+    });
+
+    vowelTransformations.forEach(({ pattern, replacement }) => {
+        output = output.replace(pattern, replacement);
+    });
+
+    output = output.replace(hRemoval, '');
+
+    suffixTransformations.forEach(({ pattern, replacement }) => {
+        output = output.replace(pattern, replacement);
+    });
+
+    // y, w, 'に特定の母音以外の文字が続く場合削除
+    output = output.replace(y_w_apostropheRemoval, '');
+
+    // 母音以外の文字に'が続く場合削除
+    output = output.replace(apostropheAfterNonVowelRemoval, '');
+
+    return output;
 
             toLowerCaseReplacements.forEach(({ pattern, replacement }) => {
                 output = output.replace(pattern, replacement);
